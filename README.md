@@ -69,3 +69,31 @@ Session 에  HOSTNAME 부분에 ec2-user@ [내 AWS 인스턴스의 퍼블릭 IPV
 7. cd aws-exercise-a
 8. npm install
 
+[실습코드] nginx,phusion passenger 설치 및 서비스
+1. 서버 로그인
+2. cd /var/www
+3. wget http://s3.amazonaws.com/phusion-passenger/releases/passenger-5.3.6.tar.gz
+4. sudo mkdir /var/passenger
+5. sudo chown ec2-user /var/passenger
+6. gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB  ( http://rvm.io/rvm/install 사이트참조)
+7. curl -sSL https://get.rvm.io | bash -s stable
+8. source /home/ec2-user/.rvm/scripts/rvm
+9. rvm reload
+10. rvm requirements run
+11. rvm install 2.4.3
+12. echo export PATH=/var/passenger/passenger-5.3.6/bin:$PATH >> ~/.bash_profile
+13. source ~/.bash_profile
+14. passenger-install-nginx-module ( SPACE 로 체크 및 체크해제 가능, NODE.JS 만 설치  가상메모리부족 경고창 뜬다. 경고메세지대로 가상메모리 늘려주기)
+15. sudo dd if=/dev/zero of=/swap bs=1M count=1024
+  sudo mkswap /swap
+  sudo swapon /swap
+ 16. passenger-install-nginx-module ( 1번 누르고 엔터)
+ 17.  
+  export ORIG_PATH="$PATH"
+  rvmsudo -E /bin/bash
+  export PATH="$ORIG_PATH"
+  export rvmsudo_secure_path=1
+  /home/ec2-user/.rvm/gems/ruby-2.4.3/wrappers/ruby /var/passenger/passenger-5.3.6/bin/passenger-install-nginx-module
+ 18. exit
+ 19. sudo vi /opt/nginx/conf/nginx.conf ( nginx 설정변경을위한  파일열기)
+
