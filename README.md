@@ -53,7 +53,7 @@ Session 에  HOSTNAME 부분에 ec2-user@ [내 AWS 인스턴스의 퍼블릭 IPV
 
 
 [실습 코드]
-1. curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install | bash
+1.curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 2. . ~/.nvm/nvm.sh
 3. nvm install 10.13.0
 4. node -e "console.log('Running Node.js' + process.version)"
