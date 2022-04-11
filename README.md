@@ -72,19 +72,20 @@ Session 에  HOSTNAME 부분에 ec2-user@ [내 AWS 인스턴스의 퍼블릭 IPV
 [실습코드] nginx,phusion passenger 설치 및 서비스
 1. 서버 로그인
 2. cd /var/www
-3. wget http://s3.amazonaws.com/phusion-passenger/releases/passenger-5.3.6.tar.gz
+3. wget http://s3.amazonaws.com/phusion-passenger/releases/passenger-5.3.7.tar.gz  ( 책에는 5.3.6 인데  책대로하면 버젼오류가뜨므로 5.3.7로변경... 1시간잡아먹음) 
 4. sudo mkdir /var/passenger
 5. sudo chown ec2-user /var/passenger
-6. gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB  ( http://rvm.io/rvm/install 사이트참조)
-7. curl -sSL https://get.rvm.io | bash -s stable
-8. source /home/ec2-user/.rvm/scripts/rvm
-9. rvm reload
-10. rvm requirements run
-11. rvm install 2.4.3
-12. echo export PATH=/var/passenger/passenger-5.3.6/bin:$PATH >> ~/.bash_profile
-13. source ~/.bash_profile
-14. passenger-install-nginx-module ( SPACE 로 체크 및 체크해제 가능, NODE.JS 만 설치  가상메모리부족 경고창 뜬다. 경고메세지대로 가상메모리 늘려주기)
-15. sudo dd if=/dev/zero of=/swap bs=1M count=1024
+6. tar -xzvf passenger-5.3.7.tar.gz -C /var/passenger
+7. gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB  ( http://rvm.io/rvm/install 사이트참조) --- 간혹 http 와 fetch 할수없다는 에러창이 뜨면 curl -sSL https://rvm.io/pkuczynski.asc | gpg --import - 로 해보자
+8. curl -sSL https://get.rvm.io | bash -s stable
+9. source /home/ec2-user/.rvm/scripts/rvm
+10. rvm reload
+11. rvm requirements run
+12. rvm install 2.4.3
+13. echo export PATH=/var/passenger/passenger-5.3.7/bin:$PATH >> ~/.bash_profile
+14. source ~/.bash_profile
+15. passenger-install-nginx-module ( SPACE 로 체크 및 체크해제 가능, NODE.JS 만 설치  가상메모리부족 경고창 뜬다. 경고메세지대로 가상메모리 늘려주기)
+16. sudo dd if=/dev/zero of=/swap bs=1M count=1024
   sudo mkswap /swap
   sudo swapon /swap
  16. passenger-install-nginx-module ( 1번 누르고 엔터)
@@ -93,7 +94,48 @@ Session 에  HOSTNAME 부분에 ec2-user@ [내 AWS 인스턴스의 퍼블릭 IPV
   rvmsudo -E /bin/bash
   export PATH="$ORIG_PATH"
   export rvmsudo_secure_path=1
-  /home/ec2-user/.rvm/gems/ruby-2.4.3/wrappers/ruby /var/passenger/passenger-5.3.6/bin/passenger-install-nginx-module
+  /home/ec2-user/.rvm/gems/ruby-2.4.3/wrappers/ruby /var/passenger/passenger-5.3.7/bin/passenger-install-nginx-module
  18. exit
  19. sudo vi /opt/nginx/conf/nginx.conf ( nginx 설정변경을위한  파일열기)
+ 20. 
+worker_process 1;
+events{
+   worker_connections 1024;
+}
 
+http{
+server_names_hash_bucket_size 256;
+passenger_root /var/passenger/passenger-5.3.7;
+passenger_ruby /home/ec2-user/.rvm/gems/ruby-2.4.3/wrappers/ruby;
+include mime.types;
+default_type application/octet-stream;
+sendfile on;
+keepalive_timeout 65;
+
+server{
+listen 80;
+server_name <EC2 public address 입력>
+root /var/www/aws-exercise-a/public;
+
+passenger_enabled on;
+passenger_app_type node;
+passenger_startup_file /var/www/aws-exercise-a/app.js;
+
+}
+}
+21. sudo /opt/nginx/sbin/nginx
+22. 브라우저로 ec2 public 주소로 접속하면 해당문구가 뜬다
+23. cd /etc/init.d
+24. sudo vi nginx
+25.  https://gist.githubusercontent.com/deopard/fe2b37c499f3e3225a99f8bc45d5be07/raw/339c10687700e8bc5695297af548ae1356eb2592/nginx 해당 파일을 복사붙혀넣기
+26.  sudo chmod 755 nginx
+27.  서비스 조작명령어 
+28.  sudo service nginx stop
+29.  sudo service nginx start
+30.  sudo service nginx restart
+31.  sudo service nginx status
+32.  시스템 시작시 자동시작 서비스 등록
+33.  sudo chkconfig --add nginx
+34.  sudo ntsysv
+35.  nginx 체크 ( space 와 버튼이동(tab))
+36.  
