@@ -123,19 +123,22 @@ passenger_startup_file /var/www/aws-exercise-a/app.js;
 
 }
 }
+
+
+
 21. sudo /opt/nginx/sbin/nginx
 22. 브라우저로 ec2 public 주소로 접속하면 해당문구가 뜬다
 23. cd /etc/init.d
 24. sudo vi nginx
-25.  https://gist.githubusercontent.com/deopard/fe2b37c499f3e3225a99f8bc45d5be07/raw/339c10687700e8bc5695297af548ae1356eb2592/nginx 해당 파일을 복사붙혀넣기
-26.  sudo chmod 755 nginx
-27.  서비스 조작명령어 
-28.  sudo service nginx stop
-29.  sudo service nginx start
-30.  sudo service nginx restart
-31.  sudo service nginx status
-32.  시스템 시작시 자동시작 서비스 등록
-33.  sudo chkconfig --add nginx
-34.  sudo ntsysv
-35.  nginx 체크 ( space 와 버튼이동(tab))
+25.  https://gist.githubusercontent.com/deopard/fe2b37c499f3e3225a99f8bc45d5be07/raw/339c10687700e8bc5695297af548ae1356eb2592/nginx 해당 파일을 복사붙혀넣기  
+26.  sudo chmod 755 nginx  
+27.  서비스 조작명령어   
+28.  sudo service nginx stop  
+29.  sudo service nginx start  
+30.  sudo service nginx restart  
+31.  sudo service nginx status  
+32.  시스템 시작시 자동시작 서비스 등록  
+33.  sudo chkconfig --add nginx  
+34.  sudo ntsysv  
+35.  nginx 체크 ( space 와 버튼이동(tab))  
 36.  
