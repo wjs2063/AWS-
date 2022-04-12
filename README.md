@@ -148,3 +148,43 @@ passenger_startup_file /var/www/aws-exercise-a/app.js;
  3. cd aws-exercise-b
  4. npm install
  5. sudo vi /opt/nginx/conf/nginx.conf
+ 6. 기존 서버파일 
+worker_process 1;
+events{
+   worker_connections 1024;
+}
+
+http{
+server_names_hash_bucket_size 256;  
+passenger_root /var/passenger/passenger-5.3.7;  
+passenger_ruby /home/ec2-user/.rvm/gems/ruby-2.4.3/wrappers/ruby;  
+include mime.types;  
+default_type application/octet-stream;  
+sendfile on;   
+keepalive_timeout 65;  
+
+server{  
+listen 80;  
+server_name <EC2 public address 입력>    ## 중요!!
+root /var/www/aws-exercise-a/public;  
+
+passenger_enabled on;  
+passenger_app_type node;  
+passenger_startup_file /var/www/aws-exercise-a/app.js;  
+
+}
+server{  
+listen 80;  
+server_name <EC2 public DNS 입력>    ## 중요!!
+root /var/www/aws-exercise-b/public;  
+
+passenger_enabled on;  
+passenger_app_type node;  
+passenger_startup_file /var/www/aws-exercise-b/app.js;  
+
+}
+
+
+}
+7. sudo service nginx restart
+8. 접속하기!
