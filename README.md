@@ -141,4 +141,10 @@ passenger_startup_file /var/www/aws-exercise-a/app.js;
 33.  sudo chkconfig --add nginx  
 34.  sudo ntsysv  
 35.  nginx 체크 ( space 와 버튼이동(tab))  
-36.  
+ ## [실습] 하나의 서버에서 두개의 애플리케이션 서비스하기
+ 
+ 1. cd /var/www
+ 2. git clone https://github.com/deopard/aws-exercise-b.git
+ 3. cd aws-exercise-b
+ 4. npm install
+ 5. sudo vi /opt/nginx/conf/nginx.conf
