@@ -214,3 +214,4 @@ passenger_startup_file /var/www/aws-exercise-b/app.js;
 4. sudo yum install stress -y
 5. stress --cpu 1 --timeout 600  
 6. 5~10분 기다리면 인스턴스가 자동으로 한대 더 추가되는것을 볼수있다
+7. 실습을 모두 끝내고 Auto Scaling 인스턴스들을 모두 종료하고싶다면 그룹의 목표용량을 0으로설정하면 된다!
