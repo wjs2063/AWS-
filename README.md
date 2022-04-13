@@ -202,3 +202,5 @@ passenger_startup_file /var/www/aws-exercise-b/app.js;
 10. 생성후 왼쪽의 AUto Scaling 그룹생ㅅ엉
 11. Auto Scaling 그룹이름-EXERCISE-GROUP, VPC -subnet 은 northeast-2a, 2c 두개 추가
 12. Auto SCaling 그룹 생성 , 그룹용량 최소 1 최대 2로 설정, 평균 CPU 사용률 80%로 설정
+
+--결과 ![스크린샷(25)](https://user-images.githubusercontent.com/76778082/163183770-2ece104a-06b5-4207-9eb6-943f0c212575.png)
