@@ -188,3 +188,17 @@ passenger_startup_file /var/www/aws-exercise-b/app.js;
 }
 7. sudo service nginx restart
 8. 접속하기!
+
+## [실습] Auto Scaling
+1. EC2 서비스의 instance 가 Stopped 상태로 만들기(스냅숏을 생성하기위함)
+2. 인스턴스 이미지생성 ( 우클릭후 이미지생성)
+3. 이미지 이름 지정후 이미지생성
+4. EC2메뉴의 이미지 ->AMI 를 클릭해서들어가면 스냅숏한 이미지가 저장되어있음 
+5. 생성 이미지의 상태가 Available 인지 확인후
+6. 생성된 AMI ID 복사
+7. 인스턴스 -> Launch Templates 메뉴 선택
+8. 시작템플릿 생성 클릭 ( 서버 사양 및 보안그룹설정)
+9. 시작템플릿 이름, 버전설명 , 스냅숏한 AMI, 인스턴스유형,키페어이름,네트워크,보안그룹설정하기 
+10. 생성후 왼쪽의 AUto Scaling 그룹생ㅅ엉
+11. Auto Scaling 그룹이름-EXERCISE-GROUP, VPC -subnet 은 northeast-2a, 2c 두개 추가
+12. Auto SCaling 그룹 생성 , 그룹용량 최소 1 최대 2로 설정, 평균 CPU 사용률 80%로 설정
