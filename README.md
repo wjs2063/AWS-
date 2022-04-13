@@ -204,3 +204,13 @@ passenger_startup_file /var/www/aws-exercise-b/app.js;
 12. Auto SCaling 그룹 생성 , 그룹용량 최소 1 최대 2로 설정, 평균 CPU 사용률 80%로 설정
 
 --결과 ![스크린샷(25)](https://user-images.githubusercontent.com/76778082/163183770-2ece104a-06b5-4207-9eb6-943f0c212575.png)
+
+
+## [실습] Auto Scaling을 통한 인스턴스 자동 추가,제거
+### 앞선 실습에서 CPU 사용률이 80% 넘으면 인스턴스 하나 추가하고 이하로 떨어지면 인스턴스를 줄이는 조정정책을 추가했다. 제대로 동작하는지 확인
+1. AutoScaling Group에서 생성한 그룹 클릭후 인스턴스 관리 클릭 , 인스턴스가 In Service 인지 체크
+2. 해당 인스턴스의 CPU 사용량을 늘려주기위해 해당 인스턴스의 Public IP 주소를 확인후 로그인
+3. sudo amazon-linux-extras install epel -y ( 아마존 리눅스에서 stress 설치오류 )
+4. sudo yum install stress -y
+5. stress --cpu 1 --timeout 600  
+6. 5~10분 기다리면 인스턴스가 자동으로 한대 더 추가되는것을 볼수있다
