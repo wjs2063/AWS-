@@ -215,3 +215,55 @@ passenger_startup_file /var/www/aws-exercise-b/app.js;
 5. stress --cpu 1 --timeout 600  
 6. 5~10분 기다리면 인스턴스가 자동으로 한대 더 추가되는것을 볼수있다
 7. 실습을 모두 끝내고 Auto Scaling 인스턴스들을 모두 종료하고싶다면 그룹의 목표용량을 0으로설정하면 된다!
+
+
+
+## [실습] AWS Elastic Load Balancing 을 이용한 서버 트래픽 분산 관리
+ELB: 로드밸런서의 역할을 하는 AWS 서비스
+AWS 같은 클라우드 서비스를 사용하지않으면 L4 스위치같은 장비를 직점구매후 관리해야함.
+
+#### ELB 사용 요금 : https://aws.amazon.com/ko/elasticloadbalancing/pricing/?nc2=type_a 
+
+대상그룹: 로드밸런서가 요청을 전달할 서버들을 묶어둔 개념적그룹
+
+Load Balancer 의 상태검사: 로드밸런서는 관리하는 서버 중 정상적으로 동작하고있는 서버에만 요청을 전달해줌
+
+[EXAMPLE] 서버에서 GET/HEALTH 로 등록을 해두면 로드밸런서에서는 주기적으로 서버들에게 GET/health 요청을 보내봄--? 만약 상태코드 200이아닌 다른 상태코드로 응답하거나 응답을 제시간에 주지못하면 비정상상태로 판단 정상상태로 응답하기전까지 클라이언트에 요청 전달 x
+
+
+[실습] Auto Scaling 그룹,대상그룹,로드밸런서 구성 
+1. 로드밸런싱-로드밸런서-로드밸런서생성 클릭
+2. HTTP 클릭
+3.  이름:exercise-lb , 로드밸런서 프로토콜 HTTP port:80  가용영역 2a-2c 클릭 
+4.  target-group 생성해서 Autoscaling 그룹으로 지정한다  상태검사 경로는 /health
+5.  로드밸런싱-로드밸런서 exercise-lb 로드밸런서 클릭 DNS 주소로 주소창로그인
+
+
+## 장애조치 아키텍쳐 구성
+
+장애조치란 장애극복기능으로 시스템의 일부 서버에 장애가 발생했을때 전체시스템이 죽는것을 방지 
+예비 시스템이 즉시 요청을 대신 처리해서 다운타임을 최소화하고 문제없이 서비스가 돌아가도록 하는것
+서버장애는 필연적이므로 운영서버라면 꼭 서버를 2대이상 띄워서 장애조치가 가능하도록 처리해야함
+
+#### AutoScaling 을 이용한 장애조치 
+
+
+[실습] Auto Scaling 그룹과 로드밸런서를 통한 장애조치
+
+EXAMPLE: 두대의 서버를 이용하다가 1개의 서버가 장애가 나는경우 로드밸런서가 자동으로 정상적인 서버에만 요청을 보내보는지 검사 
+
+1. EC2-로드밸런싱-대상그룹- exercise-target-group 을 선택하고 [상태검사] 탭을 클릭
+2. HEALTH threshold :2, UNHEALTHY threshold:2, TIMEOUT:2, INTERVAL:5, SUCCESS codes:200
+4. AUTO SCALING -> AUTO SCALING 그룹 메뉴 - EXERCISE 그룹 선택후 세부정보 편집 목표용량 최소 최대 모두 2로변경
+5. TARGET GROUP 생성후 등록
+6. 두 인스턴스 서버에 ssh 접속 -> NEW SESSION
+7. cd/opt/nginx/logs 
+8. tail -f access.log
+9. -------- 두 서버에 나눠서 log 저장되는것을 볼수있다
+10. [장애상황재현] sudo service nginx stop
+11. 당분간은 홈페이지 접속시 오류메세지가 뜬다
+12. 몇초 후면 로드밸런서가 정상서버에만 요청하기떄문에 정상적으로 로그인이 된다.
+
+
+14. 
+15. EC2 로드밸런싱-대상그룹 클릭후 앞서 생성한 대상그룹인 exercise-target-group 을 선택후 상태검사 클릭
