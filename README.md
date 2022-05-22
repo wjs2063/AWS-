@@ -360,4 +360,3 @@ Blue(기존), Green(최신코드) 두그룹으로 나눈다.
 5. CodeDeploy Agent 배포를 진행한후 성공/실패 등 결과를 CodeDeploy 에 알려줌
 
 #### https://docs.aws.amazon.com/sdkfornet/v3/apidocs/items/CodeDeploy/NCodeDeploy.html  Code Deployment 공식문서 
-5. CodeDeploy Agent 배포를 진행한후 성공/실패 등 결과를 CodeDeploy 에 알려줌
