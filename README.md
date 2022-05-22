@@ -354,4 +354,10 @@ Blue(기존), Green(최신코드) 두그룹으로 나눈다.
 ## CODE DEPLOY 
 
 1. 우리가 개발한 애플리케이션 프로젝트의 최상단 경로에 AppSpec.yml이라는 파일을 추가한다. 배포에 필요한 모든절차들을 적어놓은 명세서역할 
-2. CodeDeploy 에    
+2. CodeDeploy 에 프로젝트의 특정한 버전을 배포해달라고 요청
+3. 배포진행할 Ec2 인스턴스들에 설치되어있는 CodeDeploy Agent들과 통신하여 Agent 들에게 요청받은 버전을 배포해달라고 요청
+4. 요청을 받은 CodeDeploy Agent 들은 코드 저장소에서 프로젝트 전체를 서버에 내려받는다 그리고 내려받은 프로젝트에있는 AppSpect.yml 파일을 읽고 해당파일에 적힌 절차대로 배포진행
+5. CodeDeploy Agent 배포를 진행한후 성공/실패 등 결과를 CodeDeploy 에 알려줌
+
+#### https://docs.aws.amazon.com/sdkfornet/v3/apidocs/items/CodeDeploy/NCodeDeploy.html  Code Deployment 공식문서 
+5. CodeDeploy Agent 배포를 진행한후 성공/실패 등 결과를 CodeDeploy 에 알려줌
